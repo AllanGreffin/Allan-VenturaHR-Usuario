@@ -30,6 +30,16 @@ public class UsuarioController {
         return retorno;
     }
     
+    @GetMapping(path = {"email/{email}"})
+    public ResponseEntity obterPorEmail(@PathVariable String email){
+        ResponseEntity retorno = ResponseEntity.notFound().build();
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if(usuario != null){
+            retorno = ResponseEntity.ok().body(usuario);
+        }
+        return retorno;
+    }
+    
     @PutMapping
     public ResponseEntity atualizarUsuario(@RequestBody Usuario usuario){
         ResponseEntity retorno = ResponseEntity.badRequest().build();
