@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,19 +22,19 @@ public class UsuarioController {
     private UsuarioRepository usuarioRepository;
     
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity obterPorId(@PathVariable int id){
+    public ResponseEntity obterPorId(@RequestParam int id){
         ResponseEntity retorno = ResponseEntity.notFound().build();
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if(usuario != null){
             retorno = ResponseEntity.ok().body(usuario);
         }
         return retorno;
     }
     
-    @GetMapping(path = {"email/{email}"})
-    public ResponseEntity obterPorEmail(@PathVariable String email){
+    @GetMapping()
+    public ResponseEntity obterPorEmail(@RequestParam String email){
         ResponseEntity retorno = ResponseEntity.notFound().build();
-        Usuario usuario = usuarioRepository.findByEmail(email);
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
         if(usuario != null){
             retorno = ResponseEntity.ok().body(usuario);
         }
@@ -45,7 +46,7 @@ public class UsuarioController {
         ResponseEntity retorno = ResponseEntity.badRequest().build();
         if(usuario != null && usuario.getId() != null){
             
-            Optional<Usuario> usuarioGravado = usuarioRepository.findById(usuario.getId());
+            Usuario usuarioGravado = usuarioRepository.findById(usuario.getId()).orElse(null);
             if(usuarioGravado != null){
             
                 try{
