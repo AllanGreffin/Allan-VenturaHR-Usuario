@@ -32,7 +32,7 @@ public class UsuarioController {
     }
     
     @GetMapping()
-    public ResponseEntity obterPorEmail(@RequestParam String email){
+    public ResponseEntity<Usuario> obterPorEmail(@RequestParam String email){
         ResponseEntity retorno = ResponseEntity.notFound().build();
         Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
         if(usuario != null){
@@ -42,7 +42,7 @@ public class UsuarioController {
     }
     
     @PutMapping
-    public ResponseEntity atualizarUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> atualizarUsuario(@RequestBody Usuario usuario){
         ResponseEntity retorno = ResponseEntity.badRequest().build();
         if(usuario != null && usuario.getId() != null){
             
@@ -61,9 +61,9 @@ public class UsuarioController {
     }
     
     @PostMapping
-    public ResponseEntity inserirUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<Usuario> inserirUsuario(@RequestBody Usuario usuario){
         
-        ResponseEntity retorno = ResponseEntity.badRequest().build();
+        ResponseEntity<Usuario> retorno = ResponseEntity.badRequest().build();
         if(usuario != null && usuario.getId() == null){
             
             Usuario usuarioInserido = usuarioRepository.save(usuario);
